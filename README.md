@@ -1,8 +1,15 @@
 # HoshinoBot-Docker
 
-## 构建
+## 获取
 
-下载 Dockerfile 后 `docker build . -t hoshinobot`
+直接拉取
+
+```sh
+docker pull docker.pkg.github.com/pcrbot/hoshinobot-docker/hoshinobot
+docker tag docker.pkg.github.com/pcrbot/hoshinobot-docker/hoshinobot hoshinobot
+```
+
+如需自行构建，请下载 Dockerfile 后 `docker build -t hoshinobot .`
 
 ## 启动
 
