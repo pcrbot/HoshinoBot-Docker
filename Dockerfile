@@ -1,9 +1,9 @@
 FROM alpine/git AS downloader
 
 RUN git clone https://github.com/Ice-Cirno/HoshinoBot.git /tmp/HoshinoBot --depth=1 \
-    && wget https://drive.di.he.cn/res.tar.gz -O res.tar.gz \
+    && wget https://download.yobot.win/hoshinobot/res.tar.gz -O res.tar.gz \
     && tar zxf res.tar.gz -C /tmp \
-    && wget https://drive.di.he.cn/ttc.tar.gz -O ttc.tar.gz \
+    && wget https://download.yobot.win/hoshinobot/ttc.tar.gz -O ttc.tar.gz \
     && mkdir /tmp/chinese \
     && tar zxf ttc.tar.gz -C /tmp/chinese
 
@@ -20,7 +20,7 @@ RUN cd /HoshinoBot \
     && cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
     && echo 'Asia/Shanghai' >/etc/timezone \
     && cp -r hoshino/config_example hoshino/config \
-    && apt-get update && apt-get install -y --no-install-recommends gcc libc6-dev \
+    && apt-get update && apt-get install -y --no-install-recommends gcc libc6-dev ffmpeg \
     && pip3 install -r requirements.txt --no-cache-dir \
     && pip3 install msgpack ujson python-Levenshtein --no-cache-dir \
     && rm -rf /var/lib/apt/lists/*
