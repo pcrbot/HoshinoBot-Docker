@@ -20,7 +20,7 @@ RUN cd /HoshinoBot \
     && cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
     && echo 'Asia/Shanghai' >/etc/timezone \
     && cp -r hoshino/config_example hoshino/config \
-    && apt-get update && apt-get install -y --no-install-recommends gcc libc6-dev ffmpeg \
+    && apt-get update && apt-get install -y --no-install-recommends gcc libc6-dev \
     && pip3 install -r requirements.txt --no-cache-dir \
     && pip3 install msgpack ujson python-Levenshtein --no-cache-dir \
     && rm -rf /var/lib/apt/lists/*
