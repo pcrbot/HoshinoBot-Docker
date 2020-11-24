@@ -1,0 +1,37 @@
+name: Build gocqhttp image
+on: workflow_dispatch
+
+jobs:
+  push_to_registry:
+    name: Push Docker image to GitHub Packages
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v2
+
+      - name: Fecth latest gocqhttp version
+        id: fetch_version
+        run: python3 gocqhttp/fetch-latest.py
+
+      - name: Download latest gocqhttp
+        run: |
+          wget https://github.com/Mrs4s/go-cqhttp/releases/download/v${{ steps.fetch_version.outputs.version }}/go-cqhttp-v${{ steps.fetch_version.outputs.version }}-linux-amd64.tar.gz
+          tar zxf go-cqhttp-v${{ steps.fetch_version.outputs.version }}-linux-amd64.tar.gz
+
+      - name: Build go-cqhttp image
+        uses: docker/build-push-action@v1
+        with:
+          username: pcrbot
+          password: ${{ secrets.PCRBOT_DOCKER_TOKEN }}
+          repository: pcrbot/gocqhttp
+          dockerfile: gocqhttp/Dockerfile
+          tags: latest,${{ steps.fetch_version.outputs.version }}
+
+      - name: Build go-cqhttp-ffmpeg image
+        uses: docker/build-push-action@v1
+        with:
+          username: pcrbot
+          password: ${{ secrets.PCRBOT_DOCKER_TOKEN }}
+          repository: pcrbot/gocqhttp
+          dockerfile: gocqhttp/ffmpeg.Dockerfile
+          tags: ffmpeg,${{ steps.fetch_version.outputs.version }}-ffmpeg
