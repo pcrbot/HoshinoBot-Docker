@@ -11,11 +11,13 @@ jobs:
 
       - name: Fecth latest gocqhttp version
         id: fetch_version
-        run: python3 gocqhttp/fetch-latest.py
+        run: |
+          tagname="$(curl -sL https://api.github.com/repos/Mrs4s/go-cqhttp/releases | jq -r '.[0].tag_name')"
+          echo ::set-output name=version::${tagname:1} 
 
       - name: Download latest gocqhttp
         run: |
-          wget https://github.com/Mrs4s/go-cqhttp/releases/download/v${{ steps.fetch_version.outputs.version }}/go-cqhttp-v${{ steps.fetch_version.outputs.version }}-linux-amd64.tar.gz
+          wget -q https://github.com/Mrs4s/go-cqhttp/releases/download/v${{ steps.fetch_version.outputs.version }}/go-cqhttp-v${{ steps.fetch_version.outputs.version }}-linux-amd64.tar.gz
           tar zxf go-cqhttp-v${{ steps.fetch_version.outputs.version }}-linux-amd64.tar.gz
 
       - name: Build go-cqhttp image

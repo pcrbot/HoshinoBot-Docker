@@ -1,9 +1,9 @@
 FROM alpine/git AS downloader
 
 RUN git clone https://github.com/Ice-Cirno/HoshinoBot.git /tmp/HoshinoBot --depth=1 \
-    && wget https://download.yobot.win/hoshinobot/res.tar.gz -O res.tar.gz \
+    && wget -q https://disk.yobot.xyz/auto/hoshinobot/res.tar.gz -O res.tar.gz \
     && tar zxf res.tar.gz -C /tmp \
-    && wget https://download.yobot.win/hoshinobot/ttc.tar.gz -O ttc.tar.gz \
+    && wget -q https://disk.yobot.xyz/auto/hoshinobot/ttc.tar.gz -O ttc.tar.gz \
     && mkdir /tmp/chinese \
     && tar zxf ttc.tar.gz -C /tmp/chinese
 
