@@ -1,4 +1,4 @@
-FROM jrottenberg/ffmpeg:4-alpine
+FROM jrottenberg/ffmpeg:4-ubuntu
 
 COPY ./go-cqhttp /usr/bin/cqhttp
 
