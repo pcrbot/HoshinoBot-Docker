@@ -10,15 +10,26 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Fecth latest gocqhttp version
-        id: fetch_version
+        id: fetch_gocq
+        shell: python
         run: |
-          tagname="$(curl -sL https://api.github.com/repos/Mrs4s/go-cqhttp/releases | jq -r '.[0].tag_name')"
-          echo ::set-output name=version::${tagname:1} 
+          import urllib.request, json, sys
+          res = urllib.request.urlopen("https://api.github.com/repos/Mrs4s/go-cqhttp/releases?per_page=1").read()
+          releases = json.loads(res)
+          version = releases[0]["tag_name"]
+          if version.startswith("v"):
+              version = version[1:]
+          print("::set-output name=version::" + version)
+          for asset in releases[0]["assets"]:
+              if asset["name"].endswith("linux-amd64.tar.gz"):
+                  print("::set-output name=asset_url::" + asset["browser_download_url"])
+                  sys.exit(0)
+          sys.exit(1)
 
       - name: Download latest gocqhttp
         run: |
-          wget -q https://github.com/Mrs4s/go-cqhttp/releases/download/v${{ steps.fetch_version.outputs.version }}/go-cqhttp-v${{ steps.fetch_version.outputs.version }}-linux-amd64.tar.gz
-          tar zxf go-cqhttp-v${{ steps.fetch_version.outputs.version }}-linux-amd64.tar.gz
+          wget -q ${{ steps.fetch_gocq.outputs.asset_url }} -O go-cqhttp.tar.gz
+          tar zxf go-cqhttp.tar.gz
 
       - name: Build go-cqhttp image
         uses: docker/build-push-action@v1
@@ -27,7 +38,7 @@ jobs:
           password: ${{ secrets.PCRBOT_DOCKER_TOKEN }}
           repository: pcrbot/gocqhttp
           dockerfile: gocqhttp/Dockerfile
-          tags: latest,${{ steps.fetch_version.outputs.version }}
+          tags: latest,${{ steps.fetch_gocq.outputs.version }}
 
       - name: Build go-cqhttp-ffmpeg image
         uses: docker/build-push-action@v1
@@ -36,4 +47,4 @@ jobs:
           password: ${{ secrets.PCRBOT_DOCKER_TOKEN }}
           repository: pcrbot/gocqhttp
           dockerfile: gocqhttp/ffmpeg.Dockerfile
-          tags: ffmpeg,${{ steps.fetch_version.outputs.version }}-ffmpeg
+          tags: ffmpeg,${{ steps.fetch_gocq.outputs.version }}-ffmpeg
