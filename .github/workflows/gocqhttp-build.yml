@@ -21,7 +21,7 @@ jobs:
               version = version[1:]
           print("::set-output name=version::" + version)
           for asset in releases[0]["assets"]:
-              if asset["name"].endswith("linux-amd64.tar.gz"):
+              if asset["name"].endswith("linux_amd64.tar.gz"):
                   print("::set-output name=asset_url::" + asset["browser_download_url"])
                   sys.exit(0)
           sys.exit(1)
