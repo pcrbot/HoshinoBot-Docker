@@ -1,28 +1,15 @@
-# pcrbot-Docker
+# Walle-Docker
 
-## 获取
+将 Walle 客户端放入 Docker 中。
 
-直接拉取
+## 使用
 
-```sh
-docker pull pcrbot/hoshinobot
-```
-
-## 启动
-
-方法1：直接运行（后续修改麻烦）
+直接运行 Walle。
 
 ```sh
-docker run -d --name hoshino pcrbot/hoshinobot
+docker run --detach \
+  --volume=./walle-data:/data \
+  --restart=always \
+  --name=walle \
+  ghcr.io/he0119/walle-k:0.1.0-a2
 ```
-
-方法2：取出源码后运行（方便后续修改）
-
-```sh
-# 取出源码
-docker run --rm -v `pwd`:/tmp/Hoshino pcrbot/hoshinobot mv /HoshinoBot/ /tmp/Hoshino/Hoshino
-# 启动
-docker run -d -v `pwd`/Hoshino:/HoshinoBot --name hoshino pcrbot/hoshinobot
-```
-
-注意：后续添加插件如需使用 pip，应当使用：`docker exec hoshino pip3`
