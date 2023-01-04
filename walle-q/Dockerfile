@@ -1,6 +1,7 @@
 FROM alpine:latest
 
 COPY ./walle-q /usr/bin/walle-q
+RUN chmod +x /usr/bin/walle-q
 
 WORKDIR /data
 
