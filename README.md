@@ -11,5 +11,5 @@ docker run --detach \
   --volume=./walle-data:/data \
   --restart=always \
   --name=walle \
-  ghcr.io/he0119/walle-k:0.1.0-a2
+  ghcr.io/he0119/walle-k
 ```
