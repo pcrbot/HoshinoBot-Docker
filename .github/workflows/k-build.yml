@@ -30,16 +30,8 @@ jobs:
           sys.exit(1)
 
       - name: Download latest walle-k
-        run: wget -q ${{ steps.fetch-walle-k.outputs.asset_url }} -O walle-k
+        run: wget -q ${{ steps.fetch-walle-k.outputs.asset_url }} -O walle-k-bin
 
-      - name: Build walle-k image
-        uses: docker/build-push-action@v1
-        with:
-          username: pcrbot
-          password: ${{ secrets.PCRBOT_DOCKER_TOKEN }}
-          repository: pcrbot/walle-k
-          dockerfile: walle-k/Dockerfile
-          tags: latest,${{ steps.fetch-walle-k.outputs.version }}
       - name: Setup Docker
         uses: docker/setup-buildx-action@v2
 
