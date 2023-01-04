@@ -47,7 +47,9 @@ jobs:
         id: metadata
         with:
           images: ghcr.io/he0119/walle-k
-          tags: latest,${{ steps.fetch-walle-k.outputs.version }}
+          tags: |
+            latest
+            ${{ steps.fetch-walle-k.outputs.version }}
 
       - name: Build and Publish
         uses: docker/build-push-action@v3
