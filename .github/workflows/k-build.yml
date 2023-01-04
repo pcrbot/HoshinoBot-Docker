@@ -1,0 +1,66 @@
+name: Build walle-k image
+
+on: workflow_dispatch
+
+jobs:
+  push_to_registry:
+    name: Push Docker image to GitHub Packages
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v2
+
+      - name: Fecth latest walle-k version
+        id: fetch-walle-k
+        shell: python
+        run: |
+          import urllib.request, json, sys, os
+          res = urllib.request.urlopen("https://api.github.com/repos/onebot-walle/walle-k/releases?per_page=1").read()
+          releases = json.loads(res)
+          version = releases[0]["tag_name"]
+          if version.startswith("v"):
+              version = version[1:]
+          with open(os.environ["GITHUB_OUTPUT"], "a") as f:
+              f.write(f"version={version}\n")
+          for asset in releases[0]["assets"]:
+              if asset["name"] == "walle-k-i686-linux-musl":
+                  with open(os.environ["GITHUB_OUTPUT"], "a") as f:
+                      f.write(f"asset_url={asset['browser_download_url']}\n")
+                  sys.exit(0)
+          sys.exit(1)
+
+      - name: Download latest walle-k
+        run: wget -q ${{ steps.fetch-walle-k.outputs.asset_url }} -O walle-k
+
+      - name: Build walle-k image
+        uses: docker/build-push-action@v1
+        with:
+          username: pcrbot
+          password: ${{ secrets.PCRBOT_DOCKER_TOKEN }}
+          repository: pcrbot/walle-k
+          dockerfile: walle-k/Dockerfile
+          tags: latest,${{ steps.fetch-walle-k.outputs.version }}
+      - name: Setup Docker
+        uses: docker/setup-buildx-action@v2
+
+      - name: Login to Github Container Registry
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Generate Tags
+        uses: docker/metadata-action@v4
+        id: metadata
+        with:
+          images: ghcr.io/he0119/walle-k
+          tags: latest,${{ steps.fetch-walle-k.outputs.version }}
+
+      - name: Build and Publish
+        uses: docker/build-push-action@v3
+        with:
+          context: walle-k
+          push: true
+          tags: ${{ steps.metadata.outputs.tags }}
+          labels: ${{ steps.metadata.outputs.labels }}
