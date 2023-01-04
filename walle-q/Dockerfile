@@ -1,6 +1,6 @@
 FROM alpine:latest
 
-COPY ./walle-q-bin /usr/bin/walle-q
+COPY ./walle-q /usr/bin/walle-q
 
 WORKDIR /data
 

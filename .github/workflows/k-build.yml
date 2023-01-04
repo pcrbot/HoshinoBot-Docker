@@ -30,7 +30,7 @@ jobs:
           sys.exit(1)
 
       - name: Download latest walle-k
-        run: wget -q ${{ steps.fetch-walle-k.outputs.asset_url }} -O walle-k-bin
+        run: wget -q ${{ steps.fetch-walle-k.outputs.asset_url }} -O walle-k/walle-k
 
       - name: Setup Docker
         uses: docker/setup-buildx-action@v2
