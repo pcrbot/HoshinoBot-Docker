@@ -10,7 +10,7 @@
 docker run --detach \
   --volume=./walle-k-data:/data \
   --restart=always \
-  --name=walle \
+  --name=walle-k \
   ghcr.io/he0119/walle-k
 ```
 
@@ -22,6 +22,20 @@ docker run --detach \
 docker run --detach \
   --volume=./walle-k-data:/data \
   --restart=always \
-  --name=walle \
+  --name=walle-q \
   ghcr.io/he0119/walle-q
+```
+
+## [Teydacore](https://github.com/teyda/teydacore)
+
+直接运行 Teydacore。
+
+```sh
+docker run --detach \
+  --env TELEGRAM_TOKEN=token \
+  --env ONEBOT_WSR_URL=url \
+  --env ONEBOT_WSR_ACCESS_TOKEN=access_token \
+  --restart=always \
+  --name=teydacore \
+  ghcr.io/he0119/teydacore
 ```
