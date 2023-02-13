@@ -39,3 +39,17 @@ docker run --detach \
   --name=teydacore \
   ghcr.io/he0119/teydacore
 ```
+
+## [NoneBot-All4One](https://github.com/nonepkg/nonebot-plugin-all4one)
+
+将 NoneBot 变成 OneBot 实现。
+
+```sh
+docker run --detach \
+  --env OBIMPL_CONNECTIONS=[] \
+  --env QQGUILD_IS_SANDBOX=false \
+  --env QQGUILD_BOTS=[] \
+  --restart=always \
+  --name=teydacore \
+  ghcr.io/he0119/nonebot-all4one
+```

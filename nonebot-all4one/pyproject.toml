@@ -1,0 +1,23 @@
+[tool.poetry]
+name = "all4one"
+version = "0.1.0"
+description = ""
+authors = ["hemengyang <hmy0119@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+nonebot2 = {extras = ["httpx", "websockets"], version = "^2.0.0rc3"}
+nonebot-plugin-all4one = {extras = ["qqguild"], git = "https://github.com/he0119/nonebot-plugin-all4one.git", branch = "feat/qqguild"}
+
+[tool.nonebot]
+adapters = [
+    { name = "QQ 频道", module_name = "nonebot.adapters.qqguild" },
+]
+plugins = ["nonebot_plugin_all4one"]
+plugin_dirs = []
+builtin_plugins = []
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
